@@ -34,17 +34,19 @@ router.get('/consumption_report', (req, res, next) => {
     "7d": 7*24*60*60*1000
   }
   MeterData.find({
-    dateUpdated: {
-      $gte: new Date() - searchRange[req.query.duration]    //returns only the datapoints submitted from desired time frame
-    }},{  
-    village: 1, amount: 1                       //returns only these fields of interest
-    })              
+      dateUpdated: 
+        {
+          $gte: new Date() - searchRange[req.query.duration]    //returns only the datapoints submitted from desired time frame
+        }
+    },{
+      village: 1, 
+      amount: 1
+    })                                  //returns only these fields of interest           
   .then(meterData => {
     res.json({villages: formatData(meterData)})
   })
   .catch(err=> {console.log("error", err)})
 })
-
 
 
 module.exports = router;

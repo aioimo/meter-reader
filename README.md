@@ -44,3 +44,8 @@ For a) an intermediary step is necessary (calling the external API) in order to 
 For b) I need to query the database, looking only for the datapoint added in the last 24 hours, aggregate the total consumption per village, and return the data in specified format. 
 
 *To simulate the external API call, I my approach was to create an "external" route with the specified functionality. 
+
+
+## Functionality of fake external API route
+
+The API expects a meter number, and returns the village name. The village name is generated modulo 5 of the meter number, so there will be 5 different villages, each with possibly multiple meters. 
