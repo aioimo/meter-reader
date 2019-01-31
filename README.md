@@ -1,4 +1,4 @@
-**Setup
+** Setup
 Add `.env` file as follows
 
 `````
@@ -6,12 +6,12 @@ PORT=3000
 ENV=development
 `````
 
-**Install Packages
+** Install Packages
 ````
 $ npm install
 ````
 
-**To Run
+** To Run
 ````
 $ npm run start
 ````
