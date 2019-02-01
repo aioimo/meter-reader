@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const meterDataSchema = new mongoose.Schema({
   counter_id: Number,
-  amount: Number,
-  village: String,
+  consumption: Number,
+  village_name: String,
   dateUpdated: {type: Date, default: Date.now}
 })
 

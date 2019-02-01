@@ -2,8 +2,6 @@ const express = require('express');
 const router  = express.Router();
 const axios = require('axios')
 const MeterData = require('../models/MeterData')
-const formatData = require('../utils/functions')
-
 
 router.post('/counter-callback', (req,res,next) => {
   const { counter_id, amount } = req.body
@@ -12,40 +10,46 @@ router.post('/counter-callback', (req,res,next) => {
       id: counter_id
     }
   })
-  .then(response => {
-    const {village_name} = response.data
-    const newMeterData = new MeterData({
-      counter_id,
-      amount,
-      village: village_name
+    .then(response => {
+      const {village_name} = response.data
+      const newMeterData = new MeterData({
+        counter_id,
+        consumption: amount,
+        village_name
+      })
+      return newMeterData.save()
     })
-    return newMeterData.save()
-  })
-  .then(response => {
-    res.json(response)
-  })
-  .catch(err=>{console.log("ERROR POST", err)})
+    .then(response => {
+      res.json(response)
+    })
+    .catch(err=>{
+      console.log("ERROR POST /counter-callback", err)
+      res.status(500).json({error: "Something went wrong."})    
+    })
 })
 
 
 router.get('/consumption_report', (req, res, next) => {
   const searchRange = {
-    "24h": 24*60*60*1000,
-    "7d": 7*24*60*60*1000
+    "24h": 24*60*60*1000        // 24 h/d * 60 min/h * 60 s/min * 1000 ms/s
   }
   MeterData.find({
-      dateUpdated: 
-        {
+      dateUpdated: {
           $gte: new Date() - searchRange[req.query.duration]    //returns only the datapoints submitted from desired time frame
         }
     },{
-      village: 1, 
-      amount: 1
-    })                                  //returns only these fields of interest           
-  .then(meterData => {
-    res.json({villages: formatData(meterData)})
-  })
-  .catch(err=> {console.log("error", err)})
+      village_name: 1,                //returns only these fields of interest 
+      consumption: 1,
+      _id: 0
+    })
+    .sort({dateUpdated: -1})          //most recent data first                                   
+    .then(meterData => {
+      res.json({villages: meterData})
+    })
+    .catch(err=> {
+      console.log("Error GET /consumption-report: ", err)
+      res.status(500).json({error: "Something went wrong."}) 
+    })
 })
 
 

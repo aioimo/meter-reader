@@ -48,4 +48,4 @@ For b) I need to query the database, looking only for the datapoint added in the
 
 ## Functionality of fake external API route
 
-The API expects a meter number, and returns the village name. The village name is generated modulo 5 of the meter number, so there will be 5 different villages, each with possibly multiple meters. 
+The API expects a meter number, and returns the village name.
