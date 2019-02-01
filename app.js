@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 
 // default value for title local
-app.locals.title = 'Meter Reader - Task# - Vermietet.de';
+app.locals.title = 'Meter Reader - Task #2 - Vermietet.de';
 
 
 // Route for my system
