@@ -31,18 +31,19 @@ router.post('/counter-callback', (req,res,next) => {
 
 router.get('/consumption_report', (req, res, next) => {
   const searchRange = {
-    "24h": 24*60*60*1000        // 24 h/d * 60 min/h * 60 s/min * 1000 ms/s
+    "24h": 24*60*60*1000           // 24 h/d * 60 min/h * 60 s/min * 1000 ms/s
   }
   MeterData.find({
       dateUpdated: {
-          $gte: new Date() - searchRange[req.query.duration]    //returns only the datapoints submitted from desired time frame
+          //returns only the datapoints submitted from desired time frame
+          $gte: new Date() - searchRange[req.query.duration]    
         }
     },{
-      village_name: 1,                //returns only these fields of interest 
+      village_name: 1,            //returns only these fields of interest 
       consumption: 1,
       _id: 0
     })
-    .sort({dateUpdated: -1})          //most recent data first                                   
+    .sort({dateUpdated: -1})      //most recent data first                                   
     .then(meterData => {
       res.json({villages: meterData})
     })
